@@ -84,12 +84,6 @@ npm install
 npm run android
 ```
 
-3. Para Web (navegador):
-```bash
-npm run web
-```
-Esto abrirá la aplicación en `http://localhost:3000`. La aplicación se mostrará en una vista circular simulando una pantalla de reloj cuando el ancho de la ventana sea menor a 500px.
-
 **Nota**: 
 - Asegúrate de tener un **emulador de Wear OS** ejecutándose (no un emulador de teléfono)
 - O un dispositivo Wear OS conectado con USB debugging habilitado
