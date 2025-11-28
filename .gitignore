@@ -45,6 +45,9 @@ fastlane/test_output
 # Bundle artifact
 *.jsbundle
 
+# Web build
+web-build/
+
 # CocoaPods
 /ios/Pods/
 
