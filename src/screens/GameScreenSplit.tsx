@@ -7,6 +7,7 @@ import {
   SafeAreaView,
   Vibration,
 } from 'react-native';
+import { GestureHandlerRootView, PanGestureHandler, State } from 'react-native-gesture-handler';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { usePadelScore } from '../hooks/usePadelScore';
@@ -44,36 +45,58 @@ export const GameScreenSplit: React.FC<GameScreenSplitProps> = ({
     }
   };
 
-  return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.splitContainer}>
-        {/* Mitad izquierda - Azul - Jugador 1 */}
-        <TouchableOpacity
-          style={styles.leftHalf}
-          onPress={() => addPoint(1)}
-          onLongPress={handleLongPress}
-          activeOpacity={0.8}
-        >
-          <View style={styles.scoreContainer}>
-            <Text style={styles.scoreText}>{formatPoint(player1Point)}</Text>
-            <Text style={styles.setsText}>{matchScore.player1Sets}</Text>
-          </View>
-        </TouchableOpacity>
+  // Manejar swipe de derecha a izquierda para cancelar partido
+  const handleSwipeEnd = (event: any) => {
+    if (event.nativeEvent.state === State.END) {
+      const { translationX, translationY } = event.nativeEvent;
+      // Detectar swipe de derecha a izquierda (translationX negativo y mayor que un umbral)
+      // Y que no sea principalmente vertical (translationY menor que translationX)
+      if (translationX < -100 && Math.abs(translationY) < Math.abs(translationX) * 0.5) {
+        navigation.navigate('SetSelection');
+      }
+    }
+  };
 
-        {/* Mitad derecha - Rojo - Jugador 2 */}
-        <TouchableOpacity
-          style={styles.rightHalf}
-          onPress={() => addPoint(2)}
-          onLongPress={handleLongPress}
-          activeOpacity={0.8}
+  return (
+    <GestureHandlerRootView style={styles.container}>
+      <SafeAreaView style={styles.container}>
+        <PanGestureHandler
+          onHandlerStateChange={handleSwipeEnd}
+          activeOffsetX={-10}
+          failOffsetY={[-10, 10]}
+          minPointers={1}
+          maxPointers={1}
         >
-          <View style={styles.scoreContainer}>
-            <Text style={styles.scoreText}>{formatPoint(player2Point)}</Text>
-            <Text style={styles.setsText}>{matchScore.player2Sets}</Text>
+          <View style={styles.splitContainer}>
+            {/* Mitad izquierda - Azul - Jugador 1 */}
+            <TouchableOpacity
+              style={styles.leftHalf}
+              onPress={() => addPoint(1)}
+              onLongPress={handleLongPress}
+              activeOpacity={0.8}
+            >
+              <View style={styles.scoreContainer}>
+                <Text style={styles.scoreText}>{formatPoint(player1Point)}</Text>
+                <Text style={styles.setsText}>{matchScore.player1Sets}</Text>
+              </View>
+            </TouchableOpacity>
+
+            {/* Mitad derecha - Rojo - Jugador 2 */}
+            <TouchableOpacity
+              style={styles.rightHalf}
+              onPress={() => addPoint(2)}
+              onLongPress={handleLongPress}
+              activeOpacity={0.8}
+            >
+              <View style={styles.scoreContainer}>
+                <Text style={styles.scoreText}>{formatPoint(player2Point)}</Text>
+                <Text style={styles.setsText}>{matchScore.player2Sets}</Text>
+              </View>
+            </TouchableOpacity>
           </View>
-        </TouchableOpacity>
-      </View>
-    </SafeAreaView>
+        </PanGestureHandler>
+      </SafeAreaView>
+    </GestureHandlerRootView>
   );
 };
 
