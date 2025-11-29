@@ -2,7 +2,7 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { SetSelectionScreen } from './src/screens/SetSelectionScreen';
-import { GameScreen } from './src/screens/GameScreen';
+import { GameScreenSplit } from './src/screens/GameScreenSplit';
 import { RootStackParamList } from './src/types/navigation';
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -18,7 +18,7 @@ const App: React.FC = () => {
         }}
       >
         <Stack.Screen name="SetSelection" component={SetSelectionScreen} />
-        <Stack.Screen name="Game" component={GameScreen} />
+        <Stack.Screen name="Game" component={GameScreenSplit} />
       </Stack.Navigator>
     </NavigationContainer>
   );
