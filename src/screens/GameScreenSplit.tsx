@@ -46,6 +46,7 @@ export const GameScreenSplit: React.FC<GameScreenSplitProps> = ({
         >
           <View style={styles.scoreContainer}>
             <Text style={styles.scoreText}>{formatPoint(player1Point)}</Text>
+            <Text style={styles.setsText}>{matchScore.player1Sets}</Text>
           </View>
         </TouchableOpacity>
 
@@ -57,6 +58,7 @@ export const GameScreenSplit: React.FC<GameScreenSplitProps> = ({
         >
           <View style={styles.scoreContainer}>
             <Text style={styles.scoreText}>{formatPoint(player2Point)}</Text>
+            <Text style={styles.setsText}>{matchScore.player2Sets}</Text>
           </View>
         </TouchableOpacity>
       </View>
@@ -94,6 +96,13 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#FFFFFF',
     fontFamily: 'monospace',
+  },
+  setsText: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#FFFFFF',
+    marginTop: 0,
+    opacity: 0.9,
   },
 });
 
