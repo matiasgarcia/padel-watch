@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   SafeAreaView,
+  Vibration,
 } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
@@ -24,7 +25,7 @@ export const GameScreenSplit: React.FC<GameScreenSplitProps> = ({
   route,
 }) => {
   const totalSets = route.params.totalSets;
-  const { matchScore, addPoint } = usePadelScore(totalSets);
+  const { matchScore, addPoint, undo, canUndo } = usePadelScore(totalSets);
 
   const player1Point = matchScore.currentGame.player1;
   const player2Point = matchScore.currentGame.player2;
@@ -35,6 +36,14 @@ export const GameScreenSplit: React.FC<GameScreenSplitProps> = ({
     return point.toString();
   };
 
+  // Manejar long press para deshacer
+  const handleLongPress = () => {
+    if (canUndo) {
+      undo();
+      Vibration.vibrate(50);
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.splitContainer}>
@@ -42,6 +51,7 @@ export const GameScreenSplit: React.FC<GameScreenSplitProps> = ({
         <TouchableOpacity
           style={styles.leftHalf}
           onPress={() => addPoint(1)}
+          onLongPress={handleLongPress}
           activeOpacity={0.8}
         >
           <View style={styles.scoreContainer}>
@@ -54,6 +64,7 @@ export const GameScreenSplit: React.FC<GameScreenSplitProps> = ({
         <TouchableOpacity
           style={styles.rightHalf}
           onPress={() => addPoint(2)}
+          onLongPress={handleLongPress}
           activeOpacity={0.8}
         >
           <View style={styles.scoreContainer}>
