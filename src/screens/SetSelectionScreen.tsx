@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   SafeAreaView,
+  ScrollView,
 } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../types/navigation';
@@ -27,7 +28,11 @@ export const SetSelectionScreen: React.FC<SetSelectionScreenProps> = ({
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.content}>
+      <ScrollView 
+        style={styles.scrollView}
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+      >
         <Text style={styles.title}>Seleccionar Sets</Text>
         <Text style={styles.subtitle}>Elige la cantidad de sets</Text>
 
@@ -59,7 +64,7 @@ export const SetSelectionScreen: React.FC<SetSelectionScreenProps> = ({
         >
           <Text style={styles.confirmButtonText}>Confirmar</Text>
         </TouchableOpacity>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -69,11 +74,15 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#000000',
   },
-  content: {
+  scrollView: {
     flex: 1,
+  },
+  scrollContent: {
+    flexGrow: 1,
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
+    paddingBottom: 40,
   },
   title: {
     fontSize: 24,
