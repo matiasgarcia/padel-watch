@@ -48,7 +48,6 @@ export const GameScreen: React.FC<GameScreenProps> = ({
             </Text>
           </TouchableOpacity>
         </View>
-        <Text style={styles.headerText}>Partido de Padel</Text>
         <View style={styles.headerRight}>
           <TouchableOpacity
             style={styles.resetButton}
@@ -70,8 +69,8 @@ export const GameScreen: React.FC<GameScreenProps> = ({
             sets={matchScore.player1Sets}
             isActive={player1HasAdvantage}
             hasAdvantage={player1HasAdvantage}
+            backgroundColor="#8B5CF6"
           />
-          <Text style={styles.playerLabel}>Jugador 1</Text>
         </TouchableOpacity>
 
         <View style={styles.divider} />
@@ -86,8 +85,8 @@ export const GameScreen: React.FC<GameScreenProps> = ({
             sets={matchScore.player2Sets}
             isActive={player2HasAdvantage}
             hasAdvantage={player2HasAdvantage}
+            backgroundColor="#3B82F6"
           />
-          <Text style={styles.playerLabel}>Jugador 2</Text>
         </TouchableOpacity>
       </View>
 
@@ -109,8 +108,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 16,
+    padding: 12,
     paddingTop: 8,
+    paddingBottom: 8,
   },
   headerLeft: {
     width: 60,
@@ -119,13 +119,6 @@ const styles = StyleSheet.create({
   headerRight: {
     width: 60,
     alignItems: 'flex-end',
-  },
-  headerText: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#ffffff',
-    flex: 1,
-    textAlign: 'center',
   },
   undoButton: {
     backgroundColor: '#FF9800',
@@ -165,37 +158,34 @@ const styles = StyleSheet.create({
   scoreContainer: {
     flex: 1,
     flexDirection: 'row',
+    minHeight: 0,
   },
   playerSection: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    paddingVertical: 10,
+    minHeight: 0,
   },
   divider: {
     width: 2,
     backgroundColor: '#333333',
   },
-  playerLabel: {
-    fontSize: 18,
-    color: '#cccccc',
-    marginTop: 10,
-    fontWeight: '600',
-  },
   deuceIndicator: {
     position: 'absolute',
-    bottom: 20,
+    bottom: 10,
     left: 0,
     right: 0,
     alignItems: 'center',
   },
   deuceText: {
-    fontSize: 18,
+    fontSize: 16,
     color: '#FFC107',
     fontWeight: '700',
     backgroundColor: 'rgba(0, 0, 0, 0.8)',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 10,
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 8,
   },
 });
 

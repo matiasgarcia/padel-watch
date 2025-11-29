@@ -7,6 +7,7 @@ interface ScoreDisplayProps {
   sets: number;
   isActive?: boolean;
   hasAdvantage?: boolean;
+  backgroundColor?: string;
 }
 
 export const ScoreDisplay: React.FC<ScoreDisplayProps> = ({
@@ -14,11 +15,12 @@ export const ScoreDisplay: React.FC<ScoreDisplayProps> = ({
   sets,
   isActive = false,
   hasAdvantage = false,
+  backgroundColor = '#1a1a1a',
 }) => {
   const displayPoint = point === 'V' ? 'V' : point.toString();
 
   return (
-    <View style={[styles.container, isActive && styles.activeContainer]}>
+    <View style={[styles.container, { backgroundColor }, isActive && styles.activeContainer]}>
       <Text style={[styles.pointText, isActive && styles.activeText]}>
         {displayPoint}
       </Text>
@@ -37,8 +39,8 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 16,
-    backgroundColor: '#1a1a1a',
+    padding: 12,
+    minHeight: 0,
   },
   activeContainer: {
     backgroundColor: '#2a2a2a',
@@ -47,24 +49,24 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   pointText: {
-    fontSize: 56,
+    fontSize: 48,
     fontWeight: 'bold',
     color: '#ffffff',
-    marginBottom: 12,
+    marginBottom: 8,
   },
   activeText: {
     color: '#4CAF50',
   },
   setsText: {
-    fontSize: 20,
+    fontSize: 18,
     color: '#cccccc',
-    marginTop: 10,
+    marginTop: 6,
     fontWeight: '500',
   },
   advantageText: {
-    fontSize: 16,
+    fontSize: 14,
     color: '#FFC107',
-    marginTop: 6,
+    marginTop: 4,
     fontWeight: '700',
   },
 });
