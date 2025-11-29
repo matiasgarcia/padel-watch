@@ -2,10 +2,10 @@
 
 buildscript {
     ext {
-        buildToolsVersion = "34.0.0"
+        buildToolsVersion = "33.0.0"
         minSdkVersion = 28  // Wear OS 3.0+ requires API 28+
-        compileSdkVersion = 34  // Wear OS 5.0 uses API 34
-        targetSdkVersion = 34
+        compileSdkVersion = 33  // AGP 7.4.2 supports up to API 33
+        targetSdkVersion = 34  // Can still target 34 for Wear OS 5.0
 
         // We use NDK 23 which has both M1 support and is the side-by-side NDK version from AGP.
         ndkVersion = "23.1.7779620"
@@ -15,7 +15,64 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("com.android.tools.build:gradle")
+        classpath("com.android.tools.build:gradle:7.4.2")
         classpath("com.facebook.react:react-native-gradle-plugin")
+    }
+}
+
+subprojects {
+    afterEvaluate { project ->
+        if (project.hasProperty("android")) {
+            project.android {
+                compileOptions {
+                    sourceCompatibility JavaVersion.VERSION_17
+                    targetCompatibility JavaVersion.VERSION_17
+                }
+                buildFeatures {
+                    buildConfig true
+                }
+            }
+        }
+        // Force androidx and Kotlin versions for all subprojects (compatible with compileSdk 33)
+        project.configurations.all {
+            resolutionStrategy {
+                force 'androidx.core:core:1.10.1'
+                force 'androidx.core:core-ktx:1.10.1'
+                force 'androidx.appcompat:appcompat:1.6.1'
+                force 'androidx.appcompat:appcompat-resources:1.6.1'
+                // Force single Kotlin stdlib version to avoid duplicates
+                force 'org.jetbrains.kotlin:kotlin-stdlib:1.7.22'
+                force 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.22'
+                force 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.22'
+            }
+        }
+        // Configure Kotlin compilation - match Java version to avoid JVM target mismatch
+        // Some libraries (like react-native-gesture-handler) use Java 1.8 (JVM 11)
+        // So we'll use JVM 11 for Kotlin to match
+        project.tasks.matching { it.name.contains("compile") && it.name.contains("Kotlin") }.configureEach { task ->
+            try {
+                def kotlinOptions = task.properties.get('kotlinOptions')
+                if (kotlinOptions != null) {
+                    kotlinOptions.jvmTarget = "11"
+                    kotlinOptions.freeCompilerArgs = ['-Xskip-metadata-version-check']
+                } else {
+                    // Try alternative access
+                    task.kotlinOptions {
+                        jvmTarget = "11"
+                        freeCompilerArgs = ['-Xskip-metadata-version-check']
+                    }
+                }
+            } catch (Exception e) {
+                // Try direct method call
+                try {
+                    task.kotlinOptions {
+                        jvmTarget = "11"
+                        freeCompilerArgs = ['-Xskip-metadata-version-check']
+                    }
+                } catch (Exception e2) {
+                    // Ignore if not a Kotlin compile task
+                }
+            }
+        }
     }
 }
