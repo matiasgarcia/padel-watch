@@ -10,8 +10,8 @@ import {
 import { GestureHandlerRootView, PanGestureHandler, State } from 'react-native-gesture-handler';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
-import { usePadelScore } from '../hooks/usePadelScore';
 import { RootStackParamList } from '../types/navigation';
+import { usePadelScoreV3 } from '../hooks/usePadelScoreV3';
 
 type GameScreenSplitNavigationProp = StackNavigationProp<RootStackParamList, 'Game'>;
 type GameScreenSplitRouteProp = RouteProp<RootStackParamList, 'Game'>;
@@ -25,8 +25,7 @@ export const GameScreenSplit: React.FC<GameScreenSplitProps> = ({
   navigation,
   route,
 }) => {
-  const totalSets = route.params?.totalSets ?? 3;
-  const { matchScore, addPoint, undo, canUndo, matchWinner } = usePadelScore(totalSets);
+  const { matchScore, addPoint, undo, canUndo, matchWinner, getSetsWon } = usePadelScoreV3();
 
   const player1Point = matchScore.currentGame.player1;
   const player2Point = matchScore.currentGame.player2;
@@ -45,6 +44,12 @@ export const GameScreenSplit: React.FC<GameScreenSplitProps> = ({
   const displayPlayer2Score = matchScore.isTieBreak && matchScore.tieBreakScore
     ? matchScore.tieBreakScore.player2.toString()
     : formatPoint(player2Point);
+
+  // Obtener juegos del set actual
+  const currentSetGames = matchScore.currentSetGames;
+  
+  // Obtener sets ganados
+  const setsWon = getSetsWon();
 
   // Manejar long press para deshacer
   const handleLongPress = () => {
@@ -79,7 +84,7 @@ export const GameScreenSplit: React.FC<GameScreenSplitProps> = ({
             <Text style={styles.victoryText}>¡Ganador!</Text>
             <Text style={styles.victoryPlayerText}>Equipo {matchWinner}</Text>
             <Text style={styles.victoryScoreText}>
-              {matchScore.player1Sets} - {matchScore.player2Sets}
+              {setsWon.player1} - {setsWon.player2}
             </Text>
             <Text style={styles.tapHintText}>Toca para volver</Text>
           </View>
@@ -106,23 +111,57 @@ export const GameScreenSplit: React.FC<GameScreenSplitProps> = ({
               onLongPress={handleLongPress}
               activeOpacity={0.8}
             >
-          <View style={styles.scoreContainer}>
-            <Text style={styles.scoreText}>{displayPlayer1Score}</Text>
-            <Text style={styles.setsText}>{matchScore.player1Sets}</Text>
-          </View>
-        </TouchableOpacity>
+              <View style={styles.scoreContainer}>
+                {/* Puntos del juego actual */}
+                <Text style={styles.scoreText}>{displayPlayer1Score}</Text>
+                
+                {/* Juegos del set actual */}
+                <Text style={styles.gamesText}>{currentSetGames.player1}</Text>
+                
+                {/* Historial de sets completados */}
+                {matchScore.sets.length > 0 && (
+                  <View style={styles.historyContainer}>
+                    {matchScore.sets.map((set, index) => (
+                      <Text key={index} style={styles.historyText}>
+                        Set {index + 1}: {set.player1}-{set.player2}
+                      </Text>
+                    ))}
+                  </View>
+                )}
+                
+                {/* Sets ganados totales */}
+                <Text style={styles.setsText}>{setsWon.player1}</Text>
+              </View>
+            </TouchableOpacity>
 
-        {/* Mitad derecha - Rojo - Jugador 2 */}
-        <TouchableOpacity
-          style={styles.rightHalf}
-          onPress={() => addPoint(2)}
-          onLongPress={handleLongPress}
-          activeOpacity={0.8}
-        >
-          <View style={styles.scoreContainer}>
-            <Text style={styles.scoreText}>{displayPlayer2Score}</Text>
-            <Text style={styles.setsText}>{matchScore.player2Sets}</Text>
-          </View>
+            {/* Mitad derecha - Rojo - Jugador 2 */}
+            <TouchableOpacity
+              style={styles.rightHalf}
+              onPress={() => addPoint(2)}
+              onLongPress={handleLongPress}
+              activeOpacity={0.8}
+            >
+              <View style={styles.scoreContainer}>
+                {/* Puntos del juego actual */}
+                <Text style={styles.scoreText}>{displayPlayer2Score}</Text>
+                
+                {/* Juegos del set actual */}
+                <Text style={styles.gamesText}>{currentSetGames.player2}</Text>
+                
+                {/* Historial de sets completados */}
+                {matchScore.sets.length > 0 && (
+                  <View style={styles.historyContainer}>
+                    {matchScore.sets.map((set, index) => (
+                      <Text key={index} style={styles.historyText}>
+                        Set {index + 1}: {set.player1}-{set.player2}
+                      </Text>
+                    ))}
+                  </View>
+                )}
+                
+                {/* Sets ganados totales */}
+                <Text style={styles.setsText}>{setsWon.player2}</Text>
+              </View>
             </TouchableOpacity>
           </View>
         </PanGestureHandler>
@@ -155,6 +194,8 @@ const styles = StyleSheet.create({
   scoreContainer: {
     justifyContent: 'center',
     alignItems: 'center',
+    flex: 1,
+    paddingVertical: 20,
   },
   scoreText: {
     fontSize: 72,
@@ -162,11 +203,29 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontFamily: 'monospace',
   },
-  setsText: {
-    fontSize: 18,
+  gamesText: {
+    fontSize: 24,
     fontWeight: '600',
     color: '#FFFFFF',
-    marginTop: 0,
+    opacity: 0.9,
+  },
+  historyContainer: {
+    alignItems: 'center',
+    marginBottom: 16,
+    minHeight: 40,
+  },
+  historyText: {
+    fontSize: 14,
+    fontWeight: '400',
+    color: '#FFFFFF',
+    opacity: 0.8,
+    marginBottom: 4,
+    textAlign: 'center',
+  },
+  setsText: {
+    fontSize: 20,
+    fontWeight: '600',
+    color: '#FFFFFF',
     opacity: 0.9,
   },
   victoryContainer: {

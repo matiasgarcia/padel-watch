@@ -48,8 +48,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 40,
     borderRadius: 12,
     minWidth: 140,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   startButtonText: {
     fontSize: 20,
