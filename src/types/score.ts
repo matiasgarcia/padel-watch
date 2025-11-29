@@ -1,4 +1,4 @@
-export type GamePoint = 0 | 15 | 30 | 45 | 'V';
+export type GamePoint = 0 | 15 | 30 | 40 | 'V';
 
 export interface GameScore {
   player1: GamePoint;
@@ -10,6 +10,11 @@ export interface MatchScore {
   player2Sets: number;
   currentGame: GameScore;
   totalSets: number;
+  isTieBreak: boolean;
+  tieBreakScore?: {
+    player1: number;
+    player2: number;
+  };
 }
 
 export interface PadelScoreState {

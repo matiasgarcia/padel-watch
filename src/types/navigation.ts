@@ -1,5 +1,5 @@
 export type RootStackParamList = {
-  SetSelection: undefined;
-  Game: { totalSets: number };
+  Home: undefined;
+  Game: { totalSets?: number };
 };
 
