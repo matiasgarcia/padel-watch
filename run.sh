@@ -1,1 +1,1 @@
-cd /Users/matias/projects/padel && export JAVA_HOME=$(/usr/libexec/java_home -v 17) && npm run android 2>&1 | tail -60
+export JAVA_HOME=$(/usr/libexec/java_home -v 17) && npm run android 2>&1 | tail -60
