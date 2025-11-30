@@ -3,6 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { HomeScreen } from './src/screens/HomeScreen';
 import { GameScreenSplit } from './src/screens/GameScreenSplit';
+import { VictoryScreen } from './src/screens/VictoryScreen';
 import { RootStackParamList } from './src/types/navigation';
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -23,6 +24,7 @@ const App: React.FC = () => {
           component={GameScreenSplit}
           initialParams={{ totalSets: 3 }}
         />
+        <Stack.Screen name="Victory" component={VictoryScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

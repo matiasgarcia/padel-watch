@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   View,
   Text,
@@ -69,27 +69,15 @@ export const GameScreenSplit: React.FC<GameScreenSplitProps> = ({
     }
   };
 
-  // Si hay un ganador, mostrar pantalla de victoria
-  if (matchWinner) {
-    return (
-      <SafeAreaView style={styles.container}>
-        <TouchableOpacity
-          style={styles.victoryContainer}
-          onPress={() => navigation.navigate('Home')}
-          activeOpacity={1}
-        >
-          <View style={[styles.victoryHalf, matchWinner === 1 ? styles.leftHalf : styles.rightHalf]}>
-            <Text style={styles.victoryText}>¡Ganador!</Text>
-            <Text style={styles.victoryPlayerText}>Equipo {matchWinner}</Text>
-            <Text style={styles.victoryScoreText}>
-              {setsWon.player1} - {setsWon.player2}
-            </Text>
-            <Text style={styles.tapHintText}>Toca para volver</Text>
-          </View>
-        </TouchableOpacity>
-      </SafeAreaView>
-    );
-  }
+  // Navegar a pantalla de victoria cuando hay un ganador
+  useEffect(() => {
+    if (matchWinner) {
+      navigation.navigate('Victory', {
+        winner: matchWinner,
+        setsWon: setsWon,
+      });
+    }
+  }, [matchWinner, setsWon, navigation]);
 
   return (
     <GestureHandlerRootView style={styles.container}>
@@ -195,48 +183,6 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#FFEB3B', // Amarillo
     opacity: 1,
-  },
-  victoryContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '100%',
-  },
-  victoryHalf: {
-    width: '100%',
-    height: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 16,
-  },
-  victoryText: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    color: '#FFFFFF',
-    marginBottom: 16,
-    textAlign: 'center',
-  },
-  victoryPlayerText: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#FFFFFF',
-    marginBottom: 20,
-    textAlign: 'center',
-  },
-  victoryScoreText: {
-    fontSize: 20,
-    fontWeight: '600',
-    color: '#FFFFFF',
-    marginBottom: 24,
-    opacity: 0.9,
-    textAlign: 'center',
-  },
-  tapHintText: {
-    fontSize: 14,
-    fontWeight: '500',
-    color: '#FFFFFF',
-    opacity: 0.7,
-    textAlign: 'center',
   },
 });
 
