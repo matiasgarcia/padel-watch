@@ -30,9 +30,7 @@ export const GameScreenSplit: React.FC<GameScreenSplitProps> = ({
   const player1Point = matchScore.currentGame.player1;
   const player2Point = matchScore.currentGame.player2;
 
-  // Formatear puntaje para mostrar
   const formatPoint = (point: typeof player1Point): string => {
-    if (point === 'V') return 'V';
     return point.toString();
   };
 
