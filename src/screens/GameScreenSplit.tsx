@@ -118,17 +118,6 @@ export const GameScreenSplit: React.FC<GameScreenSplitProps> = ({
                 {/* Juegos del set actual */}
                 <Text style={styles.gamesText}>{currentSetGames.player1}</Text>
                 
-                {/* Historial de sets completados */}
-                {matchScore.sets.length > 0 && (
-                  <View style={styles.historyContainer}>
-                    {matchScore.sets.map((set, index) => (
-                      <Text key={index} style={styles.historyText}>
-                        Set {index + 1}: {set.player1}-{set.player2}
-                      </Text>
-                    ))}
-                  </View>
-                )}
-                
                 {/* Sets ganados totales */}
                 <Text style={styles.setsText}>{setsWon.player1}</Text>
               </View>
@@ -147,17 +136,6 @@ export const GameScreenSplit: React.FC<GameScreenSplitProps> = ({
                 
                 {/* Juegos del set actual */}
                 <Text style={styles.gamesText}>{currentSetGames.player2}</Text>
-                
-                {/* Historial de sets completados */}
-                {matchScore.sets.length > 0 && (
-                  <View style={styles.historyContainer}>
-                    {matchScore.sets.map((set, index) => (
-                      <Text key={index} style={styles.historyText}>
-                        Set {index + 1}: {set.player1}-{set.player2}
-                      </Text>
-                    ))}
-                  </View>
-                )}
                 
                 {/* Sets ganados totales */}
                 <Text style={styles.setsText}>{setsWon.player2}</Text>
@@ -192,41 +170,33 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   scoreContainer: {
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     alignItems: 'center',
     flex: 1,
-    paddingVertical: 20,
+    paddingTop: 40,
+    paddingBottom: 24,
+    paddingHorizontal: 8,
+    width: '100%',
   },
   scoreText: {
-    fontSize: 72,
+    fontSize: 48,
     fontWeight: 'bold',
     color: '#FFFFFF',
     fontFamily: 'monospace',
+    marginBottom: 0,
   },
   gamesText: {
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: '600',
     color: '#FFFFFF',
+    marginBottom: 8,
     opacity: 0.9,
-  },
-  historyContainer: {
-    alignItems: 'center',
-    marginBottom: 16,
-    minHeight: 40,
-  },
-  historyText: {
-    fontSize: 14,
-    fontWeight: '400',
-    color: '#FFFFFF',
-    opacity: 0.8,
-    marginBottom: 4,
-    textAlign: 'center',
   },
   setsText: {
-    fontSize: 20,
+    fontSize: 16,
     fontWeight: '600',
-    color: '#FFFFFF',
-    opacity: 0.9,
+    color: '#FFEB3B', // Amarillo
+    opacity: 1,
   },
   victoryContainer: {
     flex: 1,
