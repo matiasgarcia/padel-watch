@@ -40,7 +40,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 20,
   },
   startButton: {
     backgroundColor: '#2196F3',
