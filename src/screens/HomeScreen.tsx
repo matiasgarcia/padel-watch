@@ -26,6 +26,13 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
         >
           <Text style={styles.startButtonText}>Empezar</Text>
         </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.historyButton}
+          onPress={() => navigation.navigate('History')}
+          activeOpacity={0.8}
+        >
+          <Text style={styles.historyButtonText}>Historial</Text>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
@@ -40,6 +47,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    gap: 16,
   },
   startButton: {
     backgroundColor: '#2196F3',
@@ -51,6 +59,20 @@ const styles = StyleSheet.create({
   startButtonText: {
     fontSize: 20,
     fontWeight: 'bold',
+    color: '#FFFFFF',
+  },
+  historyButton: {
+    backgroundColor: '#333333',
+    paddingVertical: 14,
+    paddingHorizontal: 36,
+    borderRadius: 12,
+    minWidth: 140,
+    borderWidth: 1,
+    borderColor: '#555555',
+  },
+  historyButtonText: {
+    fontSize: 18,
+    fontWeight: '600',
     color: '#FFFFFF',
   },
 });

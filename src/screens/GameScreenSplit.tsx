@@ -75,9 +75,10 @@ export const GameScreenSplit: React.FC<GameScreenSplitProps> = ({
       navigation.navigate('Victory', {
         winner: matchWinner,
         setsWon: setsWon,
+        sets: matchScore.sets,
       });
     }
-  }, [matchWinner, setsWon, navigation]);
+  }, [matchWinner, setsWon, matchScore.sets, navigation]);
 
   return (
     <GestureHandlerRootView style={styles.container}>

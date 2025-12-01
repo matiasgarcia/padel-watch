@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   View,
   Text,
@@ -9,6 +9,8 @@ import {
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from '../types/navigation';
+import { saveMatchToHistory } from '../utils/storage';
+import { MatchHistoryEntry } from '../types/matchHistory';
 
 type VictoryScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Victory'>;
 type VictoryScreenRouteProp = RouteProp<RootStackParamList, 'Victory'>;
@@ -22,7 +24,26 @@ export const VictoryScreen: React.FC<VictoryScreenProps> = ({
   navigation,
   route,
 }) => {
-  const { winner, setsWon } = route.params;
+  const { winner, setsWon, sets } = route.params;
+
+  // Guardar el partido en el historial al montar el componente
+  useEffect(() => {
+    const saveMatch = async () => {
+      const matchEntry: MatchHistoryEntry = {
+        id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+        date: Date.now(),
+        winner,
+        sets,
+        setsWon,
+      };
+      try {
+        await saveMatchToHistory(matchEntry);
+      } catch (error) {
+        console.error('Error saving match to history:', error);
+      }
+    };
+    saveMatch();
+  }, [winner, sets, setsWon]);
 
   return (
     <SafeAreaView style={styles.container}>
