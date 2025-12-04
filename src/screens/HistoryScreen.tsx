@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../types/navigation';
-import { getMatchHistory } from '../utils/storage';
+import { getMatchHistory, removeMatchFromHistory } from '../utils/storage';
 import { MatchHistoryEntry } from '../types/matchHistory';
 
 type HistoryScreenNavigationProp = StackNavigationProp<RootStackParamList, 'History'>;
@@ -59,6 +59,16 @@ export const HistoryScreen: React.FC<HistoryScreenProps> = ({ navigation }) => {
     return `${day} ${month} ${year}, ${hours}:${minutes}`;
   };
 
+  const handleDeleteMatch = async (matchId: string) => {
+    try {
+      await removeMatchFromHistory(matchId);
+      // Actualizar el estado local removiendo el partido eliminado
+      setMatches(prevMatches => prevMatches.filter(match => match.id !== matchId));
+    } catch (error) {
+      console.error('Error deleting match:', error);
+    }
+  };
+
   const renderMatchItem = ({ item }: { item: MatchHistoryEntry }) => {
     const isPlayer1Winner = item.winner === 1;
     const winnerColor = isPlayer1Winner ? '#2196F3' : '#F44336';
@@ -76,6 +86,13 @@ export const HistoryScreen: React.FC<HistoryScreenProps> = ({ navigation }) => {
               {item.setsWon.player1} - {item.setsWon.player2}
             </Text>
           </View>
+          <TouchableOpacity
+            onPress={() => handleDeleteMatch(item.id)}
+            style={styles.deleteButton}
+            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+          >
+            <Text style={styles.deleteButtonText}>🗑️</Text>
+          </TouchableOpacity>
         </View>
         <View style={styles.matchContent}>
           <View style={styles.setsDetail}>
@@ -158,7 +175,7 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 16,
+    paddingHorizontal: 0,
     paddingTop: 12,
     borderBottomWidth: 1,
     borderBottomColor: '#333333',
@@ -193,6 +210,13 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 4,
+  },
+  deleteButton: {
+    padding: 8,
+    marginLeft: 8,
+  },
+  deleteButtonText: {
+    fontSize: 18,
   },
   dateText: {
     fontSize: 10,
