@@ -19,6 +19,7 @@ import com.padelscoretracker.utils.AppLogger
  */
 class ScoringEngine {
     private val history = mutableListOf<MatchScoreV3>()
+    private val logger = AppLogger("ScoringEngine")
     
     var matchScore: MatchScoreV3 = MatchScoreV3()
         private set
@@ -256,7 +257,7 @@ class ScoringEngine {
 
         // Log current state before saving
         val currentGameScore = "${matchScore.currentGame.player1}-${matchScore.currentGame.player2}"
-        AppLogger.d("ScoringEngine", "addPoint(player=$player) - BEFORE: game=$currentGameScore, history.size=${history.size}")
+        logger.d("addPoint(player=$player) - BEFORE: game=$currentGameScore, history.size=${history.size}")
         
         // Save current state to history
         history.add(matchScore.copy())
@@ -264,7 +265,7 @@ class ScoringEngine {
             history.removeAt(0)
         }
         
-        AppLogger.d("ScoringEngine", "addPoint(player=$player) - SAVED to history: game=$currentGameScore, history.size=${history.size}")
+        logger.d("addPoint(player=$player) - SAVED to history: game=$currentGameScore, history.size=${history.size}")
 
         // If in tie-break
         val tieBreakScore = matchScore.tieBreakScore
@@ -283,13 +284,13 @@ class ScoringEngine {
 
             if (tieBreakWon && tieBreakWinner != null) {
                 matchScore = handleTieBreakWin(matchScore, tieBreakWinner)
-                AppLogger.d("ScoringEngine", "addPoint(player=$player) - AFTER: tie-break won by player $tieBreakWinner")
+                logger.d("addPoint(player=$player) - AFTER: tie-break won by player $tieBreakWinner")
                 return
             }
 
             // Continue tie-break
             matchScore = matchScore.copy(tieBreakScore = newTieBreakScore)
-            AppLogger.d("ScoringEngine", "addPoint(player=$player) - AFTER: tie-break score=${newTieBreakScore.player1}-${newTieBreakScore.player2}")
+            logger.d("addPoint(player=$player) - AFTER: tie-break score=${newTieBreakScore.player1}-${newTieBreakScore.player2}")
             return
         }
 
@@ -308,14 +309,14 @@ class ScoringEngine {
                 }
             )
             val finalGameScore = "${matchScore.currentGame.player1}-${matchScore.currentGame.player2}"
-            AppLogger.d("ScoringEngine", "addPoint(player=$player) - AFTER: deuce -> advantage, game=$finalGameScore")
+            logger.d("addPoint(player=$player) - AFTER: deuce -> advantage, game=$finalGameScore")
             return
         }
 
         // Case: player has advantage and opponent has 40
         if (currentPoint is GamePoint.Advantage && opponentPoint is GamePoint.Forty) {
             matchScore = handleGameWin(matchScore, player)
-            AppLogger.d("ScoringEngine", "addPoint(player=$player) - AFTER: game won from advantage")
+            logger.d("addPoint(player=$player) - AFTER: game won from advantage")
             return
         }
 
@@ -328,14 +329,14 @@ class ScoringEngine {
                 )
             )
             val finalGameScore = "${matchScore.currentGame.player1}-${matchScore.currentGame.player2}"
-            AppLogger.d("ScoringEngine", "addPoint(player=$player) - AFTER: advantage lost, back to deuce, game=$finalGameScore")
+            logger.d("addPoint(player=$player) - AFTER: advantage lost, back to deuce, game=$finalGameScore")
             return
         }
 
         // Case: player has advantage and opponent is not at 40
         if (currentPoint is GamePoint.Advantage && opponentPoint !is GamePoint.Forty) {
             matchScore = handleGameWin(matchScore, player)
-            AppLogger.d("ScoringEngine", "addPoint(player=$player) - AFTER: game won from advantage (opponent not at 40)")
+            logger.d("addPoint(player=$player) - AFTER: game won from advantage (opponent not at 40)")
             return
         }
 
@@ -344,7 +345,7 @@ class ScoringEngine {
         if (nextPoint == null) {
             // Game won
             matchScore = handleGameWin(matchScore, player)
-            AppLogger.d("ScoringEngine", "addPoint(player=$player) - AFTER: game won (nextPoint is null)")
+            logger.d("addPoint(player=$player) - AFTER: game won (nextPoint is null)")
             return
         }
 
@@ -358,7 +359,7 @@ class ScoringEngine {
         
         // Log final state after point added
         val finalGameScore = "${matchScore.currentGame.player1}-${matchScore.currentGame.player2}"
-        AppLogger.d("ScoringEngine", "addPoint(player=$player) - AFTER: game=$finalGameScore")
+        logger.d("addPoint(player=$player) - AFTER: game=$finalGameScore")
     }
 
     /**
@@ -368,7 +369,7 @@ class ScoringEngine {
         matchScore = MatchScoreV3()
         history.clear()
         history.add(matchScore.copy())
-        AppLogger.d("ScoringEngine", "resetMatch() - Match reset, history.size=${history.size}")
+        logger.d("resetMatch() - Match reset, history.size=${history.size}")
     }
 
     /**
@@ -376,22 +377,22 @@ class ScoringEngine {
      */
     fun undo() {
         val currentGameScore = "${matchScore.currentGame.player1}-${matchScore.currentGame.player2}"
-        AppLogger.d("ScoringEngine", "undo() - BEFORE: game=$currentGameScore, history.size=${history.size}")
+        logger.d("undo() - BEFORE: game=$currentGameScore, history.size=${history.size}")
         
         if (history.size > 1) {
             // Log all history entries for debugging
             history.forEachIndexed { index, state ->
                 val histGameScore = "${state.currentGame.player1}-${state.currentGame.player2}"
-                AppLogger.d("ScoringEngine", "undo() - history[$index]: game=$histGameScore")
+                logger.d("undo() - history[$index]: game=$histGameScore")
             }
             
             matchScore = history.last().copy()
             history.removeAt(history.size - 1)
             
             val restoredGameScore = "${matchScore.currentGame.player1}-${matchScore.currentGame.player2}"
-            AppLogger.d("ScoringEngine", "undo() - AFTER: game=$restoredGameScore, history.size=${history.size}")
+            logger.d("undo() - AFTER: game=$restoredGameScore, history.size=${history.size}")
         } else {
-            AppLogger.d("ScoringEngine", "undo() - Cannot undo: history.size=${history.size}")
+            logger.d("undo() - Cannot undo: history.size=${history.size}")
         }
     }
 
