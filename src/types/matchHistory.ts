@@ -8,3 +8,8 @@ export interface MatchHistoryEntry {
   setsWon: { player1: number; player2: number };
 }
 
+export interface VersionedMatchHistory {
+  version: number;
+  data: MatchHistoryEntry[];
+}
+

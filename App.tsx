@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { HomeScreen } from './src/screens/HomeScreen';
@@ -6,10 +6,16 @@ import { GameScreenSplit } from './src/screens/GameScreenSplit';
 import { VictoryScreen } from './src/screens/VictoryScreen';
 import { HistoryScreen } from './src/screens/HistoryScreen';
 import { RootStackParamList } from './src/types/navigation';
+import { initializeStorage } from './src/utils/storage';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
 const App: React.FC = () => {
+  // Inicializar almacenamiento y ejecutar migraciones al iniciar la app
+  useEffect(() => {
+    initializeStorage();
+  }, []);
+
   return (
     <NavigationContainer>
       <Stack.Navigator
