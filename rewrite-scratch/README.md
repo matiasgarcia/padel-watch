@@ -1,3 +1,6 @@
+TODO: FIX TIE BREAK BEHAVIOUR
+
+
 # Padel Score Tracker - Native WearOS
 
 Native Android/WearOS application for tracking padel match scores, rewritten from React Native using Kotlin and Jetpack Compose for Wear OS.
