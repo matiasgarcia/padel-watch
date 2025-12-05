@@ -408,8 +408,8 @@ export const usePadelScoreV3 = () => {
    */
   const undo = useCallback(() => {
     if (historyRef.current.length > 1) {
-      historyRef.current.pop();
       const previousState = historyRef.current[historyRef.current.length - 1];
+      historyRef.current.pop();
       setMatchScore({ ...previousState });
     }
   }, []);
