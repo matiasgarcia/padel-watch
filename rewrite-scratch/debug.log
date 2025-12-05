@@ -1,0 +1,14 @@
+--------- beginning of main
+12-05 02:13:36.391 24623 24623 D com.padelscoretracker: ScoringEngine resetMatch() - Match reset, history.size=1
+12-05 02:13:37.096 24623 24623 D com.padelscoretracker: ScoringEngine addPoint(player=1) - BEFORE: game=0-0, history.size=1
+12-05 02:13:37.096 24623 24623 D com.padelscoretracker: ScoringEngine addPoint(player=1) - SAVED to history: game=0-0, history.size=2
+12-05 02:13:37.096 24623 24623 D com.padelscoretracker: ScoringEngine addPoint(player=1) - AFTER: game=15-0
+12-05 02:13:38.452 24623 24623 D com.padelscoretracker: ScoringEngine addPoint(player=1) - BEFORE: game=15-0, history.size=2
+12-05 02:13:38.452 24623 24623 D com.padelscoretracker: ScoringEngine addPoint(player=1) - SAVED to history: game=15-0, history.size=3
+12-05 02:13:38.452 24623 24623 D com.padelscoretracker: ScoringEngine addPoint(player=1) - AFTER: game=30-0
+12-05 02:13:39.374 24623 24623 D com.padelscoretracker: ScoringEngine addPoint(player=1) - BEFORE: game=30-0, history.size=3
+12-05 02:13:39.374 24623 24623 D com.padelscoretracker: ScoringEngine addPoint(player=1) - SAVED to history: game=30-0, history.size=4
+12-05 02:13:39.374 24623 24623 D com.padelscoretracker: ScoringEngine addPoint(player=1) - AFTER: game=40-0
+12-05 02:13:39.577 24623 24623 D com.padelscoretracker: ScoringEngine addPoint(player=1) - BEFORE: game=40-0, history.size=4
+12-05 02:13:39.577 24623 24623 D com.padelscoretracker: ScoringEngine addPoint(player=1) - SAVED to history: game=40-0, history.size=5
+12-05 02:13:39.577 24623 24623 D com.padelscoretracker: ScoringEngine addPoint(player=1) - AFTER: game won (nextPoint is null)
