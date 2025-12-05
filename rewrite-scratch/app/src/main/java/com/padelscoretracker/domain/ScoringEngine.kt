@@ -260,11 +260,12 @@ class ScoringEngine {
         }
 
         // If in tie-break
-        if (matchScore.isTieBreak && matchScore.tieBreakScore != null) {
+        val tieBreakScore = matchScore.tieBreakScore
+        if (matchScore.isTieBreak && tieBreakScore != null) {
             val newTieBreakScore = if (player == 1) {
-                matchScore.tieBreakScore.copy(player1 = matchScore.tieBreakScore.player1 + 1)
+                tieBreakScore.copy(player1 = tieBreakScore.player1 + 1)
             } else {
-                matchScore.tieBreakScore.copy(player2 = matchScore.tieBreakScore.player2 + 1)
+                tieBreakScore.copy(player2 = tieBreakScore.player2 + 1)
             }
 
             // Check if tie-break is won

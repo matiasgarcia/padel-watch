@@ -4,8 +4,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.navOptions
 import androidx.wear.compose.navigation.SwipeDismissableNavHost
 import androidx.wear.compose.navigation.composable
+import androidx.wear.compose.navigation.rememberSwipeDismissableNavController
 import com.padelscoretracker.data.MatchHistoryRepository
 import com.padelscoretracker.data.MatchHistoryStore
 import com.padelscoretracker.domain.model.SetScore
@@ -59,17 +61,13 @@ fun NavGraph(
             GameScreen(
                 viewModel = gameViewModel,
                 onNavigateHome = {
-                    navController.navigate(Screen.Home.route) {
-                        popUpTo(Screen.Home.route) { inclusive = true }
-                    }
+                    navController.popBackStack()
+                    navController.navigate(Screen.Home.route)
                 },
                 onMatchWon = { winner, setsWon, sets ->
-                    navController.navigate(
-                        Screen.Victory.createRoute(winner, setsWon, sets)
-                    ) {
-                        // Clear back stack to prevent going back to game
-                        popUpTo(Screen.Home.route) { inclusive = false }
-                    }
+                    // Clear back stack to prevent going back to game
+                    navController.popBackStack(Screen.Home.route, inclusive = false)
+                    navController.navigate(Screen.Victory.createRoute(winner, setsWon, sets))
                 }
             )
         }
@@ -99,9 +97,8 @@ fun NavGraph(
                 setsWon = setsWon,
                 sets = sets,
                 onNavigateHome = {
-                    navController.navigate(Screen.Home.route) {
-                        popUpTo(Screen.Home.route) { inclusive = true }
-                    }
+                    navController.popBackStack()
+                    navController.navigate(Screen.Home.route)
                 },
                 onSaveMatch = { match ->
                     // Save match to history using repository directly

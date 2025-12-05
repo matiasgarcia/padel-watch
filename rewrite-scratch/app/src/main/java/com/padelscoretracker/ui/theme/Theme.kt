@@ -4,6 +4,7 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.wear.compose.material.MaterialTheme
+import androidx.wear.compose.material.Colors
 
 // Color palette
 val Player1Blue = Color(0xFF2196F3)
@@ -11,7 +12,7 @@ val Player2Red = Color(0xFFF44336)
 val BackgroundBlack = Color(0xFF000000)
 val YellowAccent = Color(0xFFFFEB3B)
 
-private val darkColorPalette = androidx.wear.compose.material.darkColors(
+private val darkColorPalette = Colors(
     primary = Player1Blue,
     secondary = Player2Red,
     background = BackgroundBlack,
@@ -24,7 +25,6 @@ private val darkColorPalette = androidx.wear.compose.material.darkColors(
 
 @Composable
 fun PadelScoreTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
     MaterialTheme(

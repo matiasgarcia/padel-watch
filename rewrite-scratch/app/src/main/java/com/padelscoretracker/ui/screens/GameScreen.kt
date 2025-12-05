@@ -21,7 +21,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.wear.compose.material.HapticFeedbackType
+import androidx.wear.compose.material.Text
 import com.padelscoretracker.domain.model.SetScore
 import com.padelscoretracker.ui.theme.Player1Blue
 import com.padelscoretracker.ui.theme.Player2Red
@@ -37,7 +37,6 @@ fun GameScreen(
     modifier: Modifier = Modifier
 ) {
     val matchScore by viewModel.matchScore.collectAsState()
-    val haptic = LocalHapticFeedback.current
     
     // Check for match winner and navigate
     LaunchedEffect(matchScore.matchWinner) {
@@ -62,8 +61,8 @@ fun GameScreen(
                             }
                             dragOffset = 0f
                         }
-                    ) { change, _ ->
-                        dragOffset += change.x
+                    ) { _, dragAmount ->
+                        dragOffset += dragAmount.x
                     }
                 }
         ) {
@@ -81,12 +80,10 @@ fun GameScreen(
                             detectTapGestures(
                                 onTap = {
                                     viewModel.addPoint(1)
-                                    haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                                 },
                                 onLongPress = {
                                     if (viewModel.canUndo()) {
                                         viewModel.undo()
-                                        haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                                     }
                                 }
                             )
@@ -99,8 +96,9 @@ fun GameScreen(
                         modifier = Modifier.padding(16.dp)
                     ) {
                         // Current game points (or tie-break score)
-                        val displayScore = if (matchScore.isTieBreak && matchScore.tieBreakScore != null) {
-                            matchScore.tieBreakScore.player1.toString()
+                        val tieBreakScore = matchScore.tieBreakScore
+                        val displayScore = if (matchScore.isTieBreak && tieBreakScore != null) {
+                            tieBreakScore.player1.toString()
                         } else {
                             matchScore.currentGame.player1.toString()
                         }
@@ -147,12 +145,10 @@ fun GameScreen(
                             detectTapGestures(
                                 onTap = {
                                     viewModel.addPoint(2)
-                                    haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                                 },
                                 onLongPress = {
                                     if (viewModel.canUndo()) {
                                         viewModel.undo()
-                                        haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                                     }
                                 }
                             )
@@ -165,8 +161,9 @@ fun GameScreen(
                         modifier = Modifier.padding(16.dp)
                     ) {
                         // Current game points (or tie-break score)
-                        val displayScore = if (matchScore.isTieBreak && matchScore.tieBreakScore != null) {
-                            matchScore.tieBreakScore.player2.toString()
+                        val tieBreakScore = matchScore.tieBreakScore
+                        val displayScore = if (matchScore.isTieBreak && tieBreakScore != null) {
+                            tieBreakScore.player2.toString()
                         } else {
                             matchScore.currentGame.player2.toString()
                         }

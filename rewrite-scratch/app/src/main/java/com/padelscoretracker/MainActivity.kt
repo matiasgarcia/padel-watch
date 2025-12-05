@@ -6,8 +6,8 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.navigation.compose.rememberNavController
 import androidx.wear.compose.material.Scaffold
+import androidx.wear.compose.navigation.rememberSwipeDismissableNavController
 import com.padelscoretracker.data.MatchHistoryStore
 import com.padelscoretracker.ui.navigation.NavGraph
 import com.padelscoretracker.ui.theme.PadelScoreTheme
@@ -30,7 +30,7 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun PadelScoreApp(historyStore: MatchHistoryStore) {
-    val navController = rememberNavController()
+    val navController = rememberSwipeDismissableNavController()
     
     Scaffold(
         modifier = Modifier.fillMaxSize()
