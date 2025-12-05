@@ -385,8 +385,8 @@ class ScoringEngine {
                 Log.d("ScoringEngine", "undo() - history[$index]: game=$histGameScore")
             }
             
-            history.removeAt(history.size - 1)
             matchScore = history.last().copy()
+            history.removeAt(history.size - 1)
             
             val restoredGameScore = "${matchScore.currentGame.player1}-${matchScore.currentGame.player2}"
             Log.d("ScoringEngine", "undo() - AFTER: game=$restoredGameScore, history.size=${history.size}")
