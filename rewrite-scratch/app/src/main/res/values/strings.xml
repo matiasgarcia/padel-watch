@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Padel Score</string>
+    <string name="start_game">Empezar</string>
+    <string name="history">Historial</string>
+    <string name="winner">¡Ganador!</string>
+    <string name="team">Equipo</string>
+    <string name="tap_to_return">Toca para volver</string>
+    <string name="no_matches">No hay partidos guardados</string>
+    <string name="matches_auto_saved">Los partidos se guardarán automáticamente al finalizar</string>
+    <string name="loading">Cargando…</string>
+</resources>
+
