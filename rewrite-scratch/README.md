@@ -69,9 +69,9 @@ app/src/main/java/com/padelscoretracker/
    ./gradlew assembleDebug
    ```
 
-4. Install on Wear OS device or emulator:
+4. Or use script that launches with local emulator:
    ```bash
-   adb install app/build/outputs/apk/debug/app-debug.apk
+   ./scripts/build_and_install.sh
    ```
 
 ## Requirements
